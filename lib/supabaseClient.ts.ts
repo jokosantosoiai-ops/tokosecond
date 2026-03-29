@@ -1,2 +1,0 @@
-const supabaseUrl = 'https://kujlncvmwwbepjqzizbj.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1amxuY3Ztd3diZXBqcXppemJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3Mjg1OTEsImV4cCI6MjA5MDMwNDU5MX0.H8a_toTLRwb5_A1dsRy-e5qgB3tlrx02TiybynIZc60'
