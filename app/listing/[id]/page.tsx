@@ -14,10 +14,10 @@ export default function Detail() {
 
   async function fetchData() {
     const { data } = await supabase
-      .from('listings')
-      .select('*')
-      .eq('id', id)
-      .single()
+     .from('listings')
+     .select('*')
+     .eq('id', id)
+     .single()
 
     setItem(data)
   }
@@ -26,12 +26,31 @@ export default function Detail() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h1>{item.title}</h1>
-      <h2>Rp {item.price}</h2>
-      <p>{item.description}</p>
+      {item.image_url && (
+        <img
+          src={item.image_url}
+          className="w-full h-60 object-cover mb-4 rounded"
+          alt={item.title}
+        />
+      )}
 
-      <a href="https://wa.me/628123456789">
-        <button className="bg-green-500 text-white px-4 py-2 mt-4 rounded">
+      <h1 className="text-2xl font-bold">{item.title}</h1>
+      <h2 className="text-xl text-orange-500 font-semibold">
+        Rp {item.price?.toLocaleString('id-ID')}
+      </h2>
+
+      {item.location_city && (
+        <p className="text-sm text-gray-500 mb-2">{item.location_city}</p>
+      )}
+
+      <p className="text-gray-700 whitespace-pre-wrap">{item.description}</p>
+
+      <a
+        href={`https://wa.me/${item.seller_wa || '628123456789'}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <button className="bg-green-500 text-white px-4 py-2 mt-4 rounded w-full">
           Chat Seller
         </button>
       </a>
