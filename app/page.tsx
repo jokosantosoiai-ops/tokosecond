@@ -28,6 +28,7 @@ export default function Home() {
     let query = supabase
       .from('listings')
       .select('*')
+      .eq('status', 'active') // LANGKAH 3: Hanya tampilkan barang yang statusnya active
       .order('created_at', { ascending: false })
 
     if (minPrice) query = query.gte('price', Number(minPrice))
@@ -84,7 +85,7 @@ export default function Home() {
 
         {/* UI FILTER PENCARIAN & HARGA */}
         <div className="bg-white p-4 rounded-xl shadow-sm border mb-8">
-          <h2 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Filter Pencarian</h2>
+          <h2 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider text-left">Filter Pencarian</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <input
               placeholder="Min Harga (Rp)"
@@ -116,7 +117,7 @@ export default function Home() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {listings.map((item) => (
             <div key={item.id} className="group bg-white border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 relative flex flex-col">
-              <Link href={`/listing/${item.id}`} className="flex-grow">
+              <Link href={`/listing/${item.id}`} className="flex-grow text-left">
                 {/* Gambar dengan Overlay Hover */}
                 <div className="relative aspect-square overflow-hidden bg-gray-100">
                   {item.image_url ? (
@@ -154,7 +155,7 @@ export default function Home() {
                   <p className="text-[#EE4D2D] font-bold text-lg">
                     Rp {item.price?.toLocaleString('id-ID')}
                   </p>
-                  <div className="flex items-center gap-1 mt-2 text-gray-500 text-xs">
+                  <div className="flex items-center gap-1 mt-2 text-gray-500 text-xs text-left">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -184,7 +185,7 @@ export default function Home() {
           <div className="text-center py-20 bg-white rounded-3xl border border-dashed mt-6">
             <div className="text-4xl mb-4 text-gray-300">🔍</div>
             <p className="text-gray-500 font-medium text-lg">Belum ada barang di kategori ini.</p>
-            <p className="text-gray-400 text-sm">Coba cari kategori lain atau hapus filter.</p>
+            <p className="text-gray-400 text-sm italic">"Bekasnya Kamu, Rezekinya Orang — Klik, Jual, Berkah!"</p>
           </div>
         )}
       </div>
