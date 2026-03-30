@@ -9,7 +9,7 @@ export default function Jual() {
     title: '',
     price: '',
     location_city: '',
-    category: '', // Tambahkan state kategori
+    category: '', 
     description: '',
     phone_number: '',
     bank_name: '',
@@ -72,18 +72,30 @@ export default function Jual() {
     let imageUrl = ''
 
     if (image) {
-      const fileName = `${Date.now()}-${image.name}`
-      const { data, error } = await supabase.storage
+      const fileName = `${Date.now()}-${image.name.replace(/\s/g, '_')}` // Hilangkan spasi di nama file agar URL bersih
+      
+      // 1. Upload file ke Storage
+      const { data: uploadData, error: uploadError } = await supabase.storage
         .from('listing-images')
         .upload(fileName, image)
 
-      if (!error) {
-        imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/listing-images/${fileName}`
+      if (uploadError) {
+        console.error('Upload Error:', uploadError)
+        alert('Gagal mengupload gambar. Pastikan Bucket Policy sudah Public.')
+        setLoading(false)
+        return
       }
+
+      // 2. Ambil Public URL dengan Opsi Teraman (getPublicUrl)
+      const { data: publicUrlData } = supabase.storage
+        .from('listing-images')
+        .getPublicUrl(fileName)
+
+      imageUrl = publicUrlData.publicUrl
     }
 
-    // Insert ke Database
-    const { error } = await supabase.from('listings').insert([
+    // 3. Insert data ke Database dengan URL yang sudah didapat
+    const { error: insertError } = await supabase.from('listings').insert([
       {
         ...form,
         price: Number(form.price),
@@ -92,26 +104,26 @@ export default function Jual() {
       }
     ])
 
-    if (!error) {
+    if (!insertError) {
       alert('Alhamdulillah, Berhasil dipost!')
       router.push('/')
     } else {
-      alert('Terjadi kesalahan, silakan coba lagi.')
-      console.error(error)
+      alert('Terjadi kesalahan saat menyimpan data.')
+      console.error('Insert Error:', insertError)
     }
     setLoading(false)
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen pb-12">
+    <div className="bg-gray-50 min-h-screen pb-12 text-gray-900">
       <div className="max-w-xl mx-auto p-6">
         <div className="bg-white rounded-2xl shadow-sm border p-6">
           <div className="flex justify-between items-start mb-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-800">Jual Barang</h1>
-              <p className="text-sm text-gray-500">Isi detail barang untuk menjemput berkah.</p>
+              <p className="text-sm text-gray-500 font-medium">Isi detail barang untuk menjemput berkah.</p>
             </div>
-            <span className="text-2xl">🏗️</span>
+            <span className="text-2xl animate-pulse">🏗️</span>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -119,12 +131,12 @@ export default function Jual() {
             {/* INPUT FOTO */}
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-gray-700">Foto Produk</label>
-              <label className="relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer overflow-hidden transition">
+              <label className="relative flex flex-col items-center justify-center w-full h-56 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer overflow-hidden transition group">
                 {preview ? (
-                  <img src={preview} className="w-full h-full object-cover" alt="Preview" />
+                  <img src={preview} className="w-full h-full object-cover transition-transform group-hover:scale-105" alt="Preview" />
                 ) : (
                   <div className="text-center p-4">
-                    <span className="text-3xl text-gray-400">📷</span>
+                    <span className="text-4xl text-gray-300 group-hover:text-[#EE4D2D] transition-colors">📷</span>
                     <p className="mt-2 text-sm text-gray-500 font-medium">Klik untuk Ambil Foto / Upload</p>
                   </div>
                 )}
@@ -140,10 +152,10 @@ export default function Jual() {
 
             {/* DROPDOWN KATEGORI */}
             <div className="space-y-1">
-              <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Kategori Barang</label>
+              <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Kategori</label>
               <select 
                 required
-                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white transition"
+                className="w-full border border-gray-200 p-3.5 rounded-xl focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white transition cursor-pointer appearance-none"
                 onChange={e => setForm({...form, category: e.target.value })}
                 value={form.category}
               >
@@ -157,26 +169,29 @@ export default function Jual() {
             </div>
 
             {/* INFORMASI PRODUK */}
-            <div className="space-y-3">
+            <div className="space-y-4">
               <input 
                 required
                 placeholder="Judul Barang (Contoh: Sisa Marmer Ujung Pandang)" 
-                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none"
+                className="w-full border border-gray-200 p-3.5 rounded-xl focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
                 onChange={e => setForm({...form, title: e.target.value })} 
               />
               
-              <div className="grid grid-cols-2 gap-3">
-                <input 
-                  required
-                  type="number"
-                  placeholder="Harga (Rp)" 
-                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none"
-                  onChange={e => setForm({...form, price: e.target.value })} 
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="relative">
+                  <span className="absolute left-3 top-3.5 text-gray-400 text-sm">Rp</span>
+                  <input 
+                    required
+                    type="number"
+                    placeholder="Harga" 
+                    className="w-full border border-gray-200 p-3.5 pl-10 rounded-xl focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
+                    onChange={e => setForm({...form, price: e.target.value })} 
+                  />
+                </div>
                 <input 
                   required
                   placeholder="Lokasi Kota" 
-                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none"
+                  className="w-full border border-gray-200 p-3.5 rounded-xl focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
                   onChange={e => setForm({...form, location_city: e.target.value })} 
                 />
               </div>
@@ -185,43 +200,43 @@ export default function Jual() {
                 required
                 type="text"
                 placeholder="Nomor WhatsApp (Contoh: 0812...)" 
-                className="w-full border border-orange-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-orange-50/30 font-medium"
+                className="w-full border border-orange-100 p-3.5 rounded-xl focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-orange-50/30 font-semibold"
                 onChange={e => setForm({...form, phone_number: e.target.value })} 
               />
 
               <textarea 
                 required
-                placeholder="Jelaskan kondisi barang dan sisa material Anda..." 
-                rows={3}
-                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none"
+                placeholder="Jelaskan kondisi barang dan sisa material Anda secara detail..." 
+                rows={4}
+                className="w-full border border-gray-200 p-3.5 rounded-xl focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
                 onChange={e => setForm({...form, description: e.target.value })} 
               />
             </div>
 
-            <hr className="my-2 border-gray-100" />
+            <hr className="my-4 border-gray-100" />
 
             {/* INFORMASI REKENING */}
-            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
-              <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+            <div className="bg-gray-50 p-5 rounded-2xl border border-gray-100 space-y-4">
+              <h3 className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
                 🏦 Rekening Penjual (Escrow Payout)
               </h3>
               <div className="grid grid-cols-1 gap-3">
                 <input 
                   required
-                  placeholder="Nama Bank" 
-                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white"
+                  placeholder="Nama Bank (Misal: BCA)" 
+                  className="w-full border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white transition"
                   onChange={e => setForm({...form, bank_name: e.target.value })} 
                 />
                 <input 
                   required
                   placeholder="Nomor Rekening" 
-                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white"
+                  className="w-full border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white transition"
                   onChange={e => setForm({...form, account_number: e.target.value })} 
                 />
                 <input 
                   required
                   placeholder="Atas Nama" 
-                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white"
+                  className="w-full border border-gray-200 p-3 rounded-xl focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white transition"
                   onChange={e => setForm({...form, account_name: e.target.value })} 
                 />
               </div>
@@ -229,15 +244,20 @@ export default function Jual() {
 
             <button 
               disabled={loading}
-              className={`w-full ${loading ? 'bg-gray-400' : 'bg-[#EE4D2D] hover:bg-[#d73d1f]'} text-white font-bold py-4 rounded-xl shadow-lg transition-all transform active:scale-95 flex items-center justify-center gap-2`}
+              className={`w-full ${loading ? 'bg-gray-300' : 'bg-[#EE4D2D] hover:bg-[#d73d1f] hover:shadow-orange-200'} text-white font-bold py-4 rounded-2xl shadow-lg transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 mt-4`}
             >
               {loading ? (
                 <>
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                  Sedang Memproses...
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Menyimpan Produk...
                 </>
               ) : (
-                '🚀 Posting Sekarang'
+                <>
+                  <span>🚀 Posting Sekarang</span>
+                </>
               )}
             </button>
           </form>
