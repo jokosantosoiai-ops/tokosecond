@@ -6,6 +6,11 @@ import { useRouter } from 'next/navigation'
 
 export default function Jual() {
   const [form, setForm] = useState<any>({
+    title: '',
+    price: '',
+    location_city: '',
+    description: '',
+    phone_number: '', // Tambahkan ini
     bank_name: '',
     account_number: '',
     account_name: ''
@@ -15,7 +20,6 @@ export default function Jual() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  // Fungsi Kompresi Gambar agar tidak berat di Storage
   const handleImageChange = (e: any) => {
     const file = e.target.files[0]
     if (!file) return
@@ -25,7 +29,7 @@ export default function Jual() {
       const img = new Image()
       img.onload = () => {
         const canvas = document.createElement('canvas')
-        const MAX_WIDTH = 800 // Ukuran optimal untuk web
+        const MAX_WIDTH = 800 
         let width = img.width
         let height = img.height
 
@@ -52,7 +56,7 @@ export default function Jual() {
             setImage(compressedFile)
             setPreview(URL.createObjectURL(compressedFile))
           }
-        }, 'image/jpeg', 0.7) // Kualitas 70% (Seimbang antara tajam & ringan)
+        }, 'image/jpeg', 0.7)
       }
       img.src = event.target.result
     }
@@ -76,9 +80,10 @@ export default function Jual() {
       }
     }
 
+    // Insert ke Database
     const { error } = await supabase.from('listings').insert([
       {
-        ...form,
+        ...form, // Ini akan otomatis menyertakan phone_number jika inputnya ada
         price: Number(form.price),
         image_url: imageUrl,
         created_at: new Date()
@@ -90,6 +95,7 @@ export default function Jual() {
       router.push('/')
     } else {
       alert('Terjadi kesalahan, silakan coba lagi.')
+      console.error(error)
     }
     setLoading(false)
   }
@@ -103,7 +109,7 @@ export default function Jual() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             
-            {/* INPUT FOTO DENGAN PREVIEW */}
+            {/* INPUT FOTO */}
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-gray-700">Foto Produk</label>
               <label className="relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer overflow-hidden transition">
@@ -113,13 +119,12 @@ export default function Jual() {
                   <div className="text-center p-4">
                     <span className="text-3xl">📷</span>
                     <p className="mt-2 text-sm text-gray-500 font-medium">Klik untuk Ambil Foto / Upload</p>
-                    <p className="text-[10px] text-gray-400 mt-1 uppercase">Mendukung Kamera Langsung</p>
                   </div>
                 )}
                 <input
                   type="file"
                   accept="image/*"
-                  capture="environment" // Mengaktifkan kamera belakang di HP
+                  capture="environment"
                   className="hidden"
                   onChange={handleImageChange}
                 />
@@ -130,8 +135,8 @@ export default function Jual() {
             <div className="space-y-3">
               <input 
                 required
-                placeholder="Judul Barang (Contoh: Kursi Kantor Bekas)" 
-                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
+                placeholder="Judul Barang" 
+                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none"
                 onChange={e => setForm({...form, title: e.target.value })} 
               />
               
@@ -140,60 +145,65 @@ export default function Jual() {
                   required
                   type="number"
                   placeholder="Harga (Rp)" 
-                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
+                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none"
                   onChange={e => setForm({...form, price: e.target.value })} 
                 />
                 <input 
                   required
                   placeholder="Lokasi Kota" 
-                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
+                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none"
                   onChange={e => setForm({...form, location_city: e.target.value })} 
                 />
               </div>
 
+              {/* INPUT NOMOR WHATSAPP (SANGAT PENTING) */}
+              <input 
+                required
+                type="text"
+                placeholder="Nomor WhatsApp Penjual (Contoh: 0812...)" 
+                className="w-full border border-orange-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-orange-50/30"
+                onChange={e => setForm({...form, phone_number: e.target.value })} 
+              />
+
               <textarea 
                 required
-                placeholder="Jelaskan kondisi barang Anda secara jujur..." 
-                rows={4}
-                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
+                placeholder="Jelaskan kondisi barang Anda..." 
+                rows={3}
+                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none"
                 onChange={e => setForm({...form, description: e.target.value })} 
               />
             </div>
 
-            <hr className="my-6 border-gray-100" />
+            <hr className="my-2 border-gray-100" />
 
-            {/* INFORMASI REKENING (BARU) */}
-            <div className="bg-orange-50 p-4 rounded-xl border border-orange-100 space-y-3">
-              <h3 className="text-sm font-bold text-orange-700 uppercase tracking-wider flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                </svg>
-                Data Rekening Penjual
+            {/* INFORMASI REKENING */}
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-3">
+              <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+                🏦 Data Rekening Penjual (Untuk Pencairan Dana)
               </h3>
               <input 
                 required
-                placeholder="Nama Bank (Misal: BCA / Mandiri)" 
-                className="w-full border border-orange-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition bg-white"
+                placeholder="Nama Bank" 
+                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white"
                 onChange={e => setForm({...form, bank_name: e.target.value })} 
               />
               <input 
                 required
                 placeholder="Nomor Rekening" 
-                type="text"
-                className="w-full border border-orange-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition bg-white"
+                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white"
                 onChange={e => setForm({...form, account_number: e.target.value })} 
               />
               <input 
                 required
-                placeholder="Atas Nama (A.N)" 
-                className="w-full border border-orange-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition bg-white"
+                placeholder="Atas Nama" 
+                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none bg-white"
                 onChange={e => setForm({...form, account_name: e.target.value })} 
               />
             </div>
 
             <button 
               disabled={loading}
-              className={`w-full ${loading ? 'bg-gray-400' : 'bg-[#EE4D2D] hover:bg-[#d73d1f]'} text-white font-bold py-4 rounded-xl shadow-lg transition-all transform active:scale-95 flex items-center justify-center gap-2`}
+              className={`w-full ${loading ? 'bg-gray-400' : 'bg-[#EE4D2D] hover:bg-[#d73d1f]'} text-white font-bold py-4 rounded-xl shadow-lg transition-all transform active:scale-95`}
             >
               {loading ? 'Sedang Memproses...' : '🚀 Posting Sekarang'}
             </button>
