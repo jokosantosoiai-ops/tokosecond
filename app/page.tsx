@@ -9,10 +9,20 @@ export default function Home() {
   const [minPrice, setMinPrice] = useState('')
   const [maxPrice, setMaxPrice] = useState('')
   const [city, setCity] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('')
+
+  // Daftar Kategori sesuai kesepakatan
+  const categories = [
+    { name: "Elektronik & Gadget", icon: "📱" },
+    { name: "Fashion & Aksesoris", icon: "👕" },
+    { name: "Furnitur & Perlengkapan Rumah", icon: "🏠" },
+    { name: "Hobi & Olahraga", icon: "🎸" },
+    { name: "Sisa Material Konstruksi", icon: "🏗️" }
+  ]
 
   useEffect(() => {
     fetchListings()
-  }, [])
+  }, [selectedCategory]) // Refresh otomatis saat kategori diklik
 
   async function fetchListings() {
     let query = supabase
@@ -23,6 +33,7 @@ export default function Home() {
     if (minPrice) query = query.gte('price', Number(minPrice))
     if (maxPrice) query = query.lte('price', Number(maxPrice))
     if (city) query = query.ilike('location_city', `%${city}%`)
+    if (selectedCategory) query = query.eq('category', selectedCategory)
 
     const { data } = await query
     setListings(data || [])
@@ -51,9 +62,29 @@ export default function Home() {
       </div>
 
       <div className="max-w-6xl mx-auto p-6">
-        {/* UI FILTER BOX */}
+        
+        {/* TAB FILTER KATEGORI (SCROLLABLE) */}
+        <div className="flex gap-3 overflow-x-auto pb-6 no-scrollbar">
+          <button 
+            onClick={() => setSelectedCategory('')}
+            className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all shadow-sm border ${!selectedCategory ? 'bg-[#EE4D2D] text-white border-[#EE4D2D]' : 'bg-white text-gray-600 hover:border-orange-300'}`}
+          >
+            Semua Barang
+          </button>
+          {categories.map((cat) => (
+            <button 
+              key={cat.name}
+              onClick={() => setSelectedCategory(cat.name)}
+              className={`px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all shadow-sm border flex items-center gap-2 ${selectedCategory === cat.name ? 'bg-[#EE4D2D] text-white border-[#EE4D2D]' : 'bg-white text-gray-600 hover:border-orange-300'}`}
+            >
+              <span>{cat.icon}</span> {cat.name}
+            </button>
+          ))}
+        </div>
+
+        {/* UI FILTER PENCARIAN & HARGA */}
         <div className="bg-white p-4 rounded-xl shadow-sm border mb-8">
-          <h2 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Cari Barang</h2>
+          <h2 className="text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wider">Filter Pencarian</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
             <input
               placeholder="Min Harga (Rp)"
@@ -87,7 +118,7 @@ export default function Home() {
             <div key={item.id} className="group bg-white border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 relative flex flex-col">
               <Link href={`/listing/${item.id}`} className="flex-grow">
                 {/* Gambar dengan Overlay Hover */}
-                <div className="relative aspect-square overflow-hidden">
+                <div className="relative aspect-square overflow-hidden bg-gray-100">
                   {item.image_url ? (
                     <img
                       src={item.image_url}
@@ -95,11 +126,18 @@ export default function Home() {
                       alt={item.title}
                     />
                   ) : (
-                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
                       No Image
                     </div>
                   )}
                   
+                  {/* Badge Kategori Kecil */}
+                  {item.category && (
+                    <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-[10px] text-white px-2 py-1 rounded">
+                      {item.category}
+                    </div>
+                  )}
+
                   {/* Badge Featured */}
                   {item.is_featured && (
                     <div className="absolute top-2 left-2 bg-yellow-400 text-xs font-bold px-2 py-1 rounded shadow-sm flex items-center gap-1">
@@ -143,8 +181,10 @@ export default function Home() {
 
         {/* Empty State */}
         {listings.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-gray-400 text-lg">Belum ada barang yang sesuai pencarian Anda.</p>
+          <div className="text-center py-20 bg-white rounded-3xl border border-dashed mt-6">
+            <div className="text-4xl mb-4 text-gray-300">🔍</div>
+            <p className="text-gray-500 font-medium text-lg">Belum ada barang di kategori ini.</p>
+            <p className="text-gray-400 text-sm">Coba cari kategori lain atau hapus filter.</p>
           </div>
         )}
       </div>
