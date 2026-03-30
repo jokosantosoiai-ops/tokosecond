@@ -190,7 +190,7 @@ export default function Home() {
       <footer className="py-12 bg-white border-t mt-auto">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <p className="text-gray-800 font-medium italic text-lg mb-2">
-            “Allah akan menyuburkan (memberkahi) sedekah.”
+            “Allah memusnahkan riba dan menyuburkan (memberkahi) sedekah...”
           </p>
           <p className="text-gray-400 text-sm font-bold uppercase tracking-widest mb-8">
             (QS. Al-Baqarah 2:276)
