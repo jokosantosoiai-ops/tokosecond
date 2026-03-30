@@ -2,71 +2,204 @@
 
 import { useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
+import { useRouter } from 'next/navigation'
 
 export default function Jual() {
-  const [form, setForm] = useState<any>({})
+  const [form, setForm] = useState<any>({
+    bank_name: '',
+    account_number: '',
+    account_name: ''
+  })
   const [image, setImage] = useState<File | null>(null)
+  const [preview, setPreview] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  // Fungsi Kompresi Gambar agar tidak berat di Storage
+  const handleImageChange = (e: any) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = (event: any) => {
+      const img = new Image()
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        const MAX_WIDTH = 800 // Ukuran optimal untuk web
+        let width = img.width
+        let height = img.height
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width
+            width = MAX_WIDTH
+          }
+        } else {
+          if (height > MAX_WIDTH) {
+            width *= MAX_WIDTH / height
+            height = MAX_WIDTH
+          }
+        }
+
+        canvas.width = width
+        canvas.height = height
+        const ctx = canvas.getContext('2d')
+        ctx?.drawImage(img, 0, 0, width, height)
+        
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const compressedFile = new File([blob], file.name, { type: 'image/jpeg' })
+            setImage(compressedFile)
+            setPreview(URL.createObjectURL(compressedFile))
+          }
+        }, 'image/jpeg', 0.7) // Kualitas 70% (Seimbang antara tajam & ringan)
+      }
+      img.src = event.target.result
+    }
+    reader.readAsDataURL(file)
+  }
 
   async function handleSubmit(e: any) {
     e.preventDefault()
+    setLoading(true)
 
     let imageUrl = ''
 
-    // upload image
     if (image) {
       const fileName = `${Date.now()}-${image.name}`
-
       const { data, error } = await supabase.storage
-       .from('listing-images')
-       .upload(fileName, image)
+        .from('listing-images')
+        .upload(fileName, image)
 
       if (!error) {
         imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/listing-images/${fileName}`
       }
     }
 
-    await supabase.from('listings').insert([
+    const { error } = await supabase.from('listings').insert([
       {
-       ...form,
+        ...form,
         price: Number(form.price),
-        image_url: imageUrl
+        image_url: imageUrl,
+        created_at: new Date()
       }
     ])
 
-    alert('Berhasil dipost!')
+    if (!error) {
+      alert('Alhamdulillah, Berhasil dipost!')
+      router.push('/')
+    } else {
+      alert('Terjadi kesalahan, silakan coba lagi.')
+    }
+    setLoading(false)
   }
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Jual Barang</h1>
+    <div className="bg-gray-50 min-h-screen pb-12">
+      <div className="max-w-xl mx-auto p-6">
+        <div className="bg-white rounded-2xl shadow-sm border p-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-1">Jual Barang</h1>
+          <p className="text-sm text-gray-500 mb-6">Lengkapi detail barang untuk menjemput berkah.</p>
 
-      <form onSubmit={handleSubmit} className="space-y-3">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            
+            {/* INPUT FOTO DENGAN PREVIEW */}
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-gray-700">Foto Produk</label>
+              <label className="relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer overflow-hidden transition">
+                {preview ? (
+                  <img src={preview} className="w-full h-full object-cover" alt="Preview" />
+                ) : (
+                  <div className="text-center p-4">
+                    <span className="text-3xl">📷</span>
+                    <p className="mt-2 text-sm text-gray-500 font-medium">Klik untuk Ambil Foto / Upload</p>
+                    <p className="text-[10px] text-gray-400 mt-1 uppercase">Mendukung Kamera Langsung</p>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment" // Mengaktifkan kamera belakang di HP
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
+              </label>
+            </div>
 
-        <label className="block border p-4 text-center cursor-pointer bg-gray-100 rounded">
-          📷 Upload Foto
-          <input
-            type="file"
-            className="hidden"
-            onChange={(e: any) => setImage(e.target.files[0])}
-          />
-        </label>
+            {/* INFORMASI PRODUK */}
+            <div className="space-y-3">
+              <input 
+                required
+                placeholder="Judul Barang (Contoh: Kursi Kantor Bekas)" 
+                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
+                onChange={e => setForm({...form, title: e.target.value })} 
+              />
+              
+              <div className="grid grid-cols-2 gap-3">
+                <input 
+                  required
+                  type="number"
+                  placeholder="Harga (Rp)" 
+                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
+                  onChange={e => setForm({...form, price: e.target.value })} 
+                />
+                <input 
+                  required
+                  placeholder="Lokasi Kota" 
+                  className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
+                  onChange={e => setForm({...form, location_city: e.target.value })} 
+                />
+              </div>
 
-        <input placeholder="Judul" className="w-full border p-2"
-          onChange={e => setForm({...form, title: e.target.value })} />
+              <textarea 
+                required
+                placeholder="Jelaskan kondisi barang Anda secara jujur..." 
+                rows={4}
+                className="w-full border border-gray-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition"
+                onChange={e => setForm({...form, description: e.target.value })} 
+              />
+            </div>
 
-        <input placeholder="Harga" className="w-full border p-2"
-          onChange={e => setForm({...form, price: e.target.value })} />
+            <hr className="my-6 border-gray-100" />
 
-        <input placeholder="Kota" className="w-full border p-2"
-          onChange={e => setForm({...form, location_city: e.target.value })} />
+            {/* INFORMASI REKENING (BARU) */}
+            <div className="bg-orange-50 p-4 rounded-xl border border-orange-100 space-y-3">
+              <h3 className="text-sm font-bold text-orange-700 uppercase tracking-wider flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+                Data Rekening Penjual
+              </h3>
+              <input 
+                required
+                placeholder="Nama Bank (Misal: BCA / Mandiri)" 
+                className="w-full border border-orange-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition bg-white"
+                onChange={e => setForm({...form, bank_name: e.target.value })} 
+              />
+              <input 
+                required
+                placeholder="Nomor Rekening" 
+                type="text"
+                className="w-full border border-orange-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition bg-white"
+                onChange={e => setForm({...form, account_number: e.target.value })} 
+              />
+              <input 
+                required
+                placeholder="Atas Nama (A.N)" 
+                className="w-full border border-orange-200 p-3 rounded-lg focus:ring-2 focus:ring-[#EE4D2D] outline-none transition bg-white"
+                onChange={e => setForm({...form, account_name: e.target.value })} 
+              />
+            </div>
 
-        <textarea placeholder="Deskripsi" className="w-full border p-2"
-          onChange={e => setForm({...form, description: e.target.value })} />
-
-        <button className="bg-orange-500 text-white px-4 py-2 rounded w-full">
-          Posting
-        </button>
-      </form>
+            <button 
+              disabled={loading}
+              className={`w-full ${loading ? 'bg-gray-400' : 'bg-[#EE4D2D] hover:bg-[#d73d1f]'} text-white font-bold py-4 rounded-xl shadow-lg transition-all transform active:scale-95 flex items-center justify-center gap-2`}
+            >
+              {loading ? 'Sedang Memproses...' : '🚀 Posting Sekarang'}
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   )
 }
