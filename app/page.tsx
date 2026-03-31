@@ -69,7 +69,8 @@ export default function Home() {
                 Toko<span className="text-[#EE4D2D]">Second</span>
               </h1>
               <p className="text-[10px] font-black text-[#EE4D2D] tracking-widest uppercase mt-1">
-                Bekasnya Kamu, Rezeki Orang Lain - Klik, Jual, Berkah!
+                Bekasnya Kamu, Rezeki Orang Lain - 
+                      Klik, Jual, Berkah!
               </p>
             </div>
           </Link>
