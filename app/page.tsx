@@ -69,8 +69,7 @@ export default function Home() {
                 Toko<span className="text-[#EE4D2D]">Second</span>
               </h1>
               <p className="text-[10px] font-black text-[#EE4D2D] tracking-widest uppercase mt-1">
-                Bekasnya Kamu, Rezeki Orang Lain - 
-                      Klik, Jual, Berkah!
+                Bekasnya Kamu, Rezeki Orang Lain - Klik, Jual, Berkah!
               </p>
             </div>
           </Link>
@@ -107,8 +106,7 @@ export default function Home() {
         {/* HERO SLOGAN */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tighter uppercase mb-3 italic">
-            "Dari yang terpakai, 
-          menjadi bernilai & berkah"
+            "Dari yang terpakai, menjadi bernilai & berkah"
           </h2>
         </div>
 
