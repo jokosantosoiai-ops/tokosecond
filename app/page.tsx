@@ -65,7 +65,7 @@ export default function Home() {
           </div>
           {/* MOTO DIBAWAH LOGO (SLIM) */}
           <p className="text- md:text- font-black text-[#EE4D2D] tracking-widest uppercase italic border-t border-orange-50 pt-1">
-            Menyelesaikan Masalah, Dengan Berkah - Klik, Jual, Berkah!
+            Menyelesaikan Masalah, Dengan Berkah - <span className="text-black">Klik, Jual, Berkah!</span>
           </p>
         </div>
       </nav>
