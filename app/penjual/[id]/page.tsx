@@ -11,6 +11,8 @@ export default function ProfilPenjual() {
   const [items, setItems] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
+  const ALLOWED_CATEGORIES = ['Material Sisa Konstruksi', 'Furniture-Sport']
+
   useEffect(() => {
     fetchData()
   }, [id])

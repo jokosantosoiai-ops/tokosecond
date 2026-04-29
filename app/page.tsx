@@ -22,7 +22,7 @@ export default function Home() {
   const [minPrice, setMinPrice] = useState('')
   const [maxPrice, setMaxPrice] = useState('')
 
-  const categories = ['Semua', 'Elektronik-Gadget', 'Furniture-RumahTangga', 'Fashion', 'Hobi-Kendaraan-Olahraga', 'SisaKonstruksi']
+  const categories = ['SisaKonstruksi', 'Furniture-RumahTangga']
 
   useEffect(() => { fetchListings() }, [activeCategory])
 
