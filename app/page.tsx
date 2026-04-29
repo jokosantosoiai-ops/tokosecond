@@ -65,7 +65,7 @@ export default function Home() {
           </div>
           {/* MOTO DIBAWAH LOGO (SLIM) */}
           <p className="text- md:text- font-black text-[#EE4D2D] tracking-widest uppercase italic border-t border-orange-50 pt-1">
-            Bekasnya Kamu, Rezeki Orang Lain - Klik, Jual, Berkah!
+            Menyelesaikan Masalah, Dengan Berkah - Klik, Jual, Berkah!
           </p>
         </div>
       </nav>
@@ -196,7 +196,7 @@ export default function Home() {
           </div>
 
           <p className="text-center text- font-black text-gray-300 uppercase tracking-widest pt-8 border-t border-gray-50">
-            © 2026 TokoSecond - Rezeki Mengalir, Barang Menjadi Amal
+            © 2026 TokoSecond - Menyelesaikan Masalah, Dengan Berkah
           </p>
         </div>
       </footer>
