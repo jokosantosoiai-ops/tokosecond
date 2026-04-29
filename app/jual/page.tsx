@@ -26,13 +26,11 @@ export default function Jual() {
   const [locLoading, setLocLoading] = useState(false)
   const router = useRouter()
 
-  // 5 KATEGORI UTAMA (Wajib Sinkron dengan app/page.tsx)
+  // 2 KATEGORI UTAMA (Wajib Sinkron dengan app/page.tsx)
   const categories = [
-    'Elektronik-Gadget', 
-    'Furniture-RumahTangga', 
-    'Fashion', 
-    'Hobi-Kendaraan-Olahraga', 
-    'SisaKonstruksi'
+    'MaterialSisaKonstruksi', 
+    'Furniture-Sport', 
+  
   ]
 
   // LOGIC PRO: DETEKSI KOORDINAT GPS
@@ -276,7 +274,7 @@ export default function Jual() {
 
               <div className="space-y-2">
                 <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">No. WhatsApp Aktif (628...)</label>
-                <input required placeholder="Contoh: 6281227127543" className="w-full bg-orange-50/50 border border-orange-100 p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-black text-orange-900" onChange={e => setForm({...form, phone_number: e.target.value })} />
+                <input required placeholder="Contoh: 6281227123456" className="w-full bg-orange-50/50 border border-orange-100 p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-black text-orange-900" onChange={e => setForm({...form, phone_number: e.target.value })} />
               </div>
 
               <div className="space-y-2">
