@@ -30,7 +30,11 @@ export default function Home() {
 
   async function fetchListings() {
     setLoading(true)
-    let query = supabase.from('listings').select('*').order('created_at', { ascending: false })
+    let query = supabase.from('listings')
+     .select('*')
+     .eq('status', 'active') // <-- INI SATU-SATUNYA YANG DITAMBAH
+     .order('created_at', { ascending: false })
+
     if (activeCategory!== 'Semua') query = query.eq('category', activeCategory)
     if (filterCity) query = query.ilike('location_city', `%${filterCity}%`)
     if (minPrice) query = query.gte('price', parseInt(minPrice))
