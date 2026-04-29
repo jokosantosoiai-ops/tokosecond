@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import Image from 'next/image'
 
 export default function ProfilPenjual() {
   const { id } = useParams()
@@ -20,11 +21,12 @@ export default function ProfilPenjual() {
   async function fetchData() {
     setLoading(true)
     const { data: listings } = await supabase
-      .from('listings')
-      .select('*')
-      .eq('phone_number', id) 
-      .eq('status', 'active')
-      .order('created_at', { ascending: false })
+    .from('listings')
+    .select('*')
+    .eq('phone_number', id)
+    .eq('status', 'active')
+    .in('category', ALLOWED_CATEGORIES) // Filter cuma 2 kategori
+    .order('created_at', { ascending: false })
 
     if (listings && listings.length > 0) {
       setPenjual({
@@ -42,33 +44,33 @@ export default function ProfilPenjual() {
 
   return (
     <div className="bg-gray-50 min-h-screen pb-20">
-      
+
       {/* HEADER PROFIL DENGAN PROTEKSI DATA */}
       <div className="bg-white border-b shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-14">
           <div className="flex flex-col md:flex-row items-center gap-10">
-            
-            <div className="w-28 h-28 bg-gray-900 rounded-[2rem] flex items-center justify-center text-5xl font-black text-white shadow-2xl rotate-3">
+
+            <div className="w-28 h-28 bg-gray-900 rounded- flex items-center justify-center text-5xl font-black text-white shadow-2xl rotate-3">
               {penjual?.nama?.charAt(0).toUpperCase()}
             </div>
-            
+
             <div className="text-center md:text-left flex-grow">
               <div className="flex flex-col md:flex-row items-center gap-3 mb-2">
                 <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase">
                   {penjual?.nama}
                 </h1>
-                <span className="bg-orange-100 text-[#EE4D2D] text-[10px] px-3 py-1 rounded-full uppercase tracking-widest font-black border border-orange-200">
+                <span className="bg-orange-100 text-[#EE4D2D] text- px-3 py-1 rounded-full uppercase tracking-widest font-black border border-orange-200">
                   🛡️ Escrow Protected
                 </span>
               </div>
-              
+
               <p className="text-gray-400 font-bold tracking-widest uppercase text-sm mb-6 italic">
                 📍 {penjual?.lokasi} • 📱 {penjual?.phone} (Terproteksi)
               </p>
 
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
                 <div className="bg-gray-50 border px-6 py-3 rounded-2xl">
-                   <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Barang Tersedia</p>
+                   <p className="text- text-gray-400 font-black uppercase tracking-widest">Barang Tersedia</p>
                    <p className="font-black text-2xl text-gray-800">{items.length}</p>
                 </div>
               </div>
@@ -76,10 +78,10 @@ export default function ProfilPenjual() {
 
             {/* TOMBOL EDUKASI: Mengarahkan user untuk transaksi lewat sistem */}
             <div className="max-w-xs text-center md:text-right">
-              <p className="text-[10px] text-gray-400 font-bold uppercase mb-2 leading-tight">
+              <p className="text- text-gray-400 font-bold uppercase mb-2 leading-tight">
                 Ingin menghubungi penjual? <br/> Silakan pilih barang dan lakukan pembayaran Escrow.
               </p>
-              <div className="bg-blue-50 text-blue-700 text-[10px] p-3 rounded-xl border border-blue-100 font-medium">
+              <div className="bg-blue-50 text-blue-700 text- p-3 rounded-xl border border-blue-100 font-medium">
                 Sistem TokoSecond melindungi dana Anda hingga barang diterima.
               </div>
             </div>
@@ -96,12 +98,19 @@ export default function ProfilPenjual() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {items.map((item) => (
             <Link href={`/listing/${item.id}`} key={item.id} className="group bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col p-2">
-              <div className="aspect-square relative overflow-hidden rounded-[2rem] bg-gray-50">
-                <img src={item.image_url} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="" />
-                <div className="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md text-[8px] text-white px-3 py-1.5 rounded-full font-black uppercase tracking-widest">
-                  Lihat Detail
+              <div className="aspect-square relative overflow-hidden rounded- bg-gray-50">
+                <Image
+                  src={item.image_url}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  quality={75}
+                />
+                <div className="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md text- text-white px-3 py-1.5 rounded-full font-black uppercase tracking-widest">
+                  {item.category}
                 </div>
-              </div>
+              </div> {/* <-- INI YANG KEMARIN KURANG. Penutup div aspect-square */}
               <div className="p-5">
                 <h3 className="text-sm font-black text-gray-800 line-clamp-2 h-10 mb-2 uppercase tracking-tighter leading-tight">{item.title}</h3>
                 <p className="text-[#EE4D2D] font-black text-xl">Rp {item.price?.toLocaleString('id-ID')}</p>
