@@ -56,7 +56,7 @@ export default function ProfilPenjual() {
 
             <div className="text-center md:text-left flex-grow">
               <div className="flex flex-col md:flex-row items-center gap-3 mb-2">
-                <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase">
+                <h1 className="text-4xl font-black text-black-900 tracking-tighter uppercase">
                   {penjual?.nama}
                 </h1>
                 <span className="bg-orange-100 text-[#EE4D2D] text- px-3 py-1 rounded-full uppercase tracking-widest font-black border border-orange-200">
@@ -64,21 +64,21 @@ export default function ProfilPenjual() {
                 </span>
               </div>
 
-              <p className="text-gray-400 font-bold tracking-widest uppercase text-sm mb-6 italic">
+              <p className="text-black-400 font-bold tracking-widest uppercase text-sm mb-6 italic">
                 📍 {penjual?.lokasi} • 📱 {penjual?.phone} (Terproteksi)
               </p>
 
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
-                <div className="bg-gray-50 border px-6 py-3 rounded-2xl">
-                   <p className="text- text-gray-400 font-black uppercase tracking-widest">Barang Tersedia</p>
-                   <p className="font-black text-2xl text-gray-800">{items.length}</p>
+                <div className="bg-black-50 border px-6 py-3 rounded-2xl">
+                   <p className="text- text-black-400 font-black uppercase tracking-widest">Barang Tersedia</p>
+                   <p className="font-black text-2xl text-black-800">{items.length}</p>
                 </div>
               </div>
             </div>
 
             {/* TOMBOL EDUKASI: Mengarahkan user untuk transaksi lewat sistem */}
             <div className="max-w-xs text-center md:text-right">
-              <p className="text- text-gray-400 font-bold uppercase mb-2 leading-tight">
+              <p className="text- text-black-400 font-bold uppercase mb-2 leading-tight">
                 Ingin menghubungi penjual? <br/> Silakan pilih barang dan lakukan pembayaran Escrow.
               </p>
               <div className="bg-blue-50 text-blue-700 text- p-3 rounded-xl border border-blue-100 font-medium">
@@ -91,7 +91,7 @@ export default function ProfilPenjual() {
 
       {/* DAFTAR BARANG (ETALASE) */}
       <div className="max-w-6xl mx-auto p-6 mt-12">
-        <h2 className="text-sm font-black text-gray-400 mb-10 uppercase tracking-[0.3em] border-l-4 border-[#EE4D2D] pl-6">
+        <h2 className="text-sm font-black text-black-400 mb-10 uppercase tracking-[0.3em] border-l-4 border-[#EE4D2D] pl-6">
           Pilih Barang Untuk Lihat Kontak
         </h2>
 
