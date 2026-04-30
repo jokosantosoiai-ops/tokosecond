@@ -164,36 +164,36 @@ export default function Jual() {
   return (
     <div className="bg-[#FAFAFA] min-h-screen pb-20">
       {/* NAVBAR MINIMALIS */}
-      <nav className="bg-white border-b border-gray-100 mb-8 shadow-sm">
+      <nav className="bg-white border-b border-black-100 mb-8 shadow-sm">
         <div className="max-w-xl mx-auto h-20 px-6 flex items-center justify-between">
-          <Link href="/" className="text-gray-400 hover:text-[#EE4D2D] transition-colors flex items-center gap-2">
+          <Link href="/" className="text-black-400 hover:text-[#EE4D2D] transition-colors flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
             </svg>
             <span className="text-[10px] font-black uppercase tracking-widest">Kembali</span>
           </Link>
           <div className="text-right">
-            <h1 className="text-sm font-black text-gray-900 uppercase tracking-tighter italic leading-none">TokoSecond</h1>
+            <h1 className="text-sm font-black text-black-900 uppercase tracking-tighter italic leading-none">TokoSecond</h1>
             <p className="text-[8px] font-bold text-[#EE4D2D] uppercase tracking-widest mt-1 italic">Klik, Jual, Berkah!</p>
           </div>
         </div>
       </nav>
 
       <div className="max-w-xl mx-auto px-6">
-        <div className="bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-50 overflow-hidden">
+        <div className="bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-black-50 overflow-hidden">
           
           {/* HEADER FORM */}
           <div className="bg-black p-8 text-center">
              <h2 className="text-xl font-black text-white uppercase tracking-widest italic">Mulai Jual Berkah</h2>
-             <p className="text-[9px] text-gray-400 font-bold uppercase tracking-[0.3em] mt-2 italic">Pastikan data yang Anda masukkan jujur & amanah</p>
+             <p className="text-[9px] text-black-400 font-bold uppercase tracking-[0.3em] mt-2 italic">Pastikan data yang Anda masukkan jujur & amanah</p>
           </div>
 
           <form onSubmit={handleSubmit} className="p-8 space-y-8">
             
             {/* UPLOAD FOTO SECTION */}
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">Foto Produk (Wajib)</label>
-              <label className="relative flex flex-col items-center justify-center w-full h-80 border-4 border-dashed border-gray-100 rounded-[2.5rem] bg-gray-50 hover:bg-gray-100 hover:border-[#EE4D2D]/30 cursor-pointer overflow-hidden transition-all group">
+              <label className="text-[10px] font-black text-black-400 uppercase tracking-[0.2em] ml-2">Foto Produk (Wajib)</label>
+              <label className="relative flex flex-col items-center justify-center w-full h-80 border-4 border-dashed border-black-100 rounded-[2.5rem] bg-black-50 hover:bg-black-100 hover:border-[#EE4D2D]/30 cursor-pointer overflow-hidden transition-all group">
                 {preview ? (
                   <img src={preview} className="w-full h-full object-cover transition-transform group-hover:scale-105" alt="Preview" />
                 ) : (
@@ -201,7 +201,7 @@ export default function Jual() {
                     <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
                       <span className="text-3xl">📸</span>
                     </div>
-                    <p className="text-[11px] text-gray-500 font-black uppercase tracking-widest leading-none">Ambil Foto / Pilih File</p>
+                    <p className="text-[11px] text-black-500 font-black uppercase tracking-widest leading-none">Ambil Foto / Pilih File</p>
                   </div>
                 )}
                 <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
@@ -223,18 +223,18 @@ export default function Jual() {
                 {locLoading ? (
                   <div className="flex items-center gap-3">
                     <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Mencari Koordinat...</span>
+                    <span className="text-[10px] font-black text-black-500 uppercase tracking-widest">Mencari Koordinat...</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
                     <span className="text-xl">{form.latitude ? '📍' : '🎯'}</span>
-                    <span className="text-xs font-black text-gray-800 uppercase tracking-widest">
+                    <span className="text-xs font-black text-black-800 uppercase tracking-widest">
                       {form.latitude ? 'Lokasi Berhasil Dikunci' : 'Deteksi Lokasi Saya'}
                     </span>
                   </div>
                 )}
               </button>
-              <p className="text-[9px] text-center text-gray-400 font-bold uppercase leading-relaxed px-4">
+              <p className="text-[9px] text-center text-black-400 font-bold uppercase leading-relaxed px-4">
                 Wajib diklik agar pembeli tahu estimasi ongkir kargo ke lokasi Anda secara otomatis.
               </p>
             </div>
@@ -242,10 +242,10 @@ export default function Jual() {
             {/* DATA PRODUK */}
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">Kategori Barang</label>
+                <label className="text-[10px] font-black text-black-400 uppercase tracking-[0.2em] ml-2">Kategori Barang</label>
                 <select 
                   required
-                  className="w-full bg-gray-50 border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-black appearance-none cursor-pointer"
+                  className="w-full bg-black-50 border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-black appearance-none cursor-pointer"
                   onChange={e => setForm({...form, category: e.target.value })}
                   value={form.category}
                 >
@@ -257,50 +257,50 @@ export default function Jual() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">Informasi Barang</label>
-                <input required placeholder="Apa nama barang yang Anda jual?" className="w-full bg-gray-50 border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-bold" onChange={e => setForm({...form, title: e.target.value })} />
+                <label className="text-[10px] font-black text-black-400 uppercase tracking-[0.2em] ml-2">Informasi Barang</label>
+                <input required placeholder="Apa nama barang yang Anda jual?" className="w-full bg-black-50 border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-bold" onChange={e => setForm({...form, title: e.target.value })} />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                   <label className="text-[10px] font-black text-gray-400 uppercase ml-2 tracking-widest italic font-mono">Harga (Rp)</label>
-                   <input required type="number" placeholder="Contoh: 500000" className="w-full bg-gray-50 border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-bold" onChange={e => setForm({...form, price: e.target.value })} />
+                   <label className="text-[10px] font-black text-black-400 uppercase ml-2 tracking-widest italic font-mono">Harga (Rp)</label>
+                   <input required type="number" placeholder="Contoh: 500000" className="w-full bg-black-50 border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-bold" onChange={e => setForm({...form, price: e.target.value })} />
                 </div>
                 <div className="space-y-2">
-                   <label className="text-[10px] font-black text-gray-400 uppercase ml-2 tracking-widest italic font-mono">Lokasi Kota</label>
-                   <input required placeholder="Contoh: Jakarta" className="w-full bg-gray-50 border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-bold uppercase" onChange={e => setForm({...form, location_city: e.target.value })} />
+                   <label className="text-[10px] font-black text-black-400 uppercase ml-2 tracking-widest italic font-mono">Lokasi Kota</label>
+                   <input required placeholder="Contoh: Jakarta" className="w-full bg-black-50 border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-bold uppercase" onChange={e => setForm({...form, location_city: e.target.value })} />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">No. WhatsApp Aktif (628...)</label>
+                <label className="text-[10px] font-black text-black-400 uppercase tracking-[0.2em] ml-2">No. WhatsApp Aktif (628...)</label>
                 <input required placeholder="Contoh: 6281227123456" className="w-full bg-orange-50/50 border border-orange-100 p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-black text-orange-900" onChange={e => setForm({...form, phone_number: e.target.value })} />
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] ml-2">Deskripsi Barang</label>
-                <textarea required placeholder="Jelaskan kondisi barang, kelengkapan, dll..." rows={4} className="w-full bg-gray-50 border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-medium italic" onChange={e => setForm({...form, description: e.target.value })} />
+                <label className="text-[10px] font-black text-black-400 uppercase tracking-[0.2em] ml-2">Deskripsi Barang</label>
+                <textarea required placeholder="Jelaskan kondisi barang, kelengkapan, dll..." rows={4} className="w-full bg-black-50 border-none p-4 rounded-2xl focus:ring-2 focus:ring-[#EE4D2D] outline-none text-xs font-medium italic" onChange={e => setForm({...form, description: e.target.value })} />
               </div>
             </div>
 
             {/* DATA PEMBAYARAN ESCROW */}
-            <div className="bg-gray-900 p-8 rounded-[2.5rem] space-y-5 shadow-2xl relative overflow-hidden">
+            <div className="bg-black-900 p-8 rounded-[2.5rem] space-y-5 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 p-4 opacity-10 text-4xl">🏦</div>
               <h3 className="text-[10px] font-black text-[#EE4D2D] uppercase tracking-[0.3em] mb-2 italic">Keamanan Rekening (Escrow)</h3>
-              <p className="text-[9px] text-gray-400 font-medium leading-relaxed mb-4 italic">Dana pembeli akan ditahan oleh sistem dan baru dikirim ke rekening Anda setelah barang dikonfirmasi sampai.</p>
+              <p className="text-[9px] text-black-400 font-medium leading-relaxed mb-4 italic">Dana pembeli akan ditahan oleh sistem dan baru dikirim ke rekening Anda setelah barang dikonfirmasi sampai.</p>
               
               <div className="space-y-4">
-                <input required placeholder="Nama Bank (BCA, Mandiri, BRI, dll)" className="w-full bg-gray-800 border-none text-white p-4 rounded-xl outline-none text-xs font-bold placeholder:text-gray-600" onChange={e => setForm({...form, bank_name: e.target.value })} />
+                <input required placeholder="Nama Bank (BCA, Mandiri, BRI, dll)" className="w-full bg-black-800 border-none text-white p-4 rounded-xl outline-none text-xs font-bold placeholder:text-black-600" onChange={e => setForm({...form, bank_name: e.target.value })} />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input required placeholder="Nomor Rekening" className="w-full bg-gray-800 border-none text-white p-4 rounded-xl outline-none text-xs font-bold placeholder:text-gray-600" onChange={e => setForm({...form, account_number: e.target.value })} />
-                  <input required placeholder="Nama Pemilik Rekening" className="w-full bg-gray-800 border-none text-white p-4 rounded-xl outline-none text-xs font-bold placeholder:text-gray-600 uppercase" onChange={e => setForm({...form, account_name: e.target.value })} />
+                  <input required placeholder="Nomor Rekening" className="w-full bg-black-800 border-none text-white p-4 rounded-xl outline-none text-xs font-bold placeholder:text-black-600" onChange={e => setForm({...form, account_number: e.target.value })} />
+                  <input required placeholder="Nama Pemilik Rekening" className="w-full bg-black-800 border-none text-white p-4 rounded-xl outline-none text-xs font-bold placeholder:text-black-600 uppercase" onChange={e => setForm({...form, account_name: e.target.value })} />
                 </div>
               </div>
             </div>
 
             <button 
               disabled={loading}
-              className={`w-full py-6 rounded-[2.5rem] font-black uppercase tracking-[0.3em] text-xs transition-all shadow-2xl ${loading ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-[#EE4D2D] hover:bg-[#d73d1f] text-white active:scale-95 shadow-orange-200'}`}
+              className={`w-full py-6 rounded-[2.5rem] font-black uppercase tracking-[0.3em] text-xs transition-all shadow-2xl ${loading ? 'bg-black-200 text-black-400 cursor-not-allowed' : 'bg-[#EE4D2D] hover:bg-[#d73d1f] text-white active:scale-95 shadow-orange-200'}`}
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-3">
@@ -314,8 +314,8 @@ export default function Jual() {
 
         {/* FOOTER KECIL */}
         <div className="mt-12 text-center space-y-4">
-          <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.5em]">TokoSecond - Jual Beli Amanah</p>
-          <p className="text-[11px] font-bold text-gray-400 italic">"Sebaik-baik manusia adalah yang paling bermanfaat bagi orang lain."</p>
+          <p className="text-[10px] font-black text-black-300 uppercase tracking-[0.5em]">TokoSecond - Jual Beli Amanah</p>
+          <p className="text-[11px] font-bold text-black-400 italic">"Sebaik-baik manusia adalah yang paling bermanfaat bagi orang lain."</p>
         </div>
       </div>
     </div>
