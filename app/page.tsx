@@ -125,7 +125,7 @@ export default function Home() {
                 activeCategory === cat? 'bg-black border-black text-white' : 'bg-white border-gray-100 text-gray-500'
               }`}
             >
-              {cat === 'Material Sisa Konstruksi'? 'Material Sisa ' : cat}
+              {cat === 'Material Sisa Konstruksi'? 'Material SisaKonstruksi ' : cat}
             </button>
           ))}
         </div>
