@@ -73,22 +73,22 @@ export default function Home() {
 
         {/* HERO SLOGAN */}
         <div className="text-center mb-6">
-          <p className="text-xs md:text-sm font-bold text-gray-400 italic">"Dari yang terpakai, menjadi bernilai & berkah"</p>
+          <p className="text-xs md:text-sm font-bold text-black-400 italic">"Dari yang terpakai, menjadi bernilai & berkah"</p>
         </div>
 
         {/* TABEL PENCARIAN 1 BARIS - FIX HP */}
-        <div className="bg-white p-2 rounded-2xl shadow-md border border-gray-100 mb-6 sticky top-0 z-40">
+        <div className="bg-white p-2 rounded-2xl shadow-md border border-black-100 mb-6 sticky top-0 z-40">
           <div className="grid grid-cols-4 items-center gap-1.5">
             <input
               placeholder="Min"
               type="number"
-              className="w-full bg-gray-50 border-none p-2 rounded-lg outline-none text-xs font-bold"
+              className="w-full bg-black-50 border-none p-2 rounded-lg outline-none text-xs font-bold"
               onChange={(e) => setMinPrice(e.target.value)}
             />
             <input
               placeholder="Max"
               type="number"
-              className="w-full bg-gray-50 border-none p-2 rounded-lg outline-none text-xs font-bold"
+              className="w-full bg-black-50 border-none p-2 rounded-lg outline-none text-xs font-bold"
               onChange={(e) => setMaxPrice(e.target.value)}
             />
             <input
