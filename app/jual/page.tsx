@@ -293,7 +293,7 @@ export default function Jual() {
   <input 
     required 
     placeholder="Nama Bank (BCA, Mandiri, BRI, dll)" 
-    className="w-full bg-black-900 border-2 border-black-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400" 
+    className="w-full bg-white border-2 border-gray-300 text-gray-900 p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 focus:border-orange-500 focus:ring-1 focus:ring-orange-500" 
     onChange={e => setForm({...form, bank_name: e.target.value })} 
   />
   
@@ -301,14 +301,14 @@ export default function Jual() {
     <input 
       required 
       placeholder="Nomor Rekening" 
-      className="w-full bg-black-900 border-2 border-black-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400" 
+      className="w-full bg-white border-2 border-gray-300 text-gray-900 p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 focus:border-orange-500 focus:ring-1 focus:ring-orange-500" 
       onChange={e => setForm({...form, account_number: e.target.value })} 
     />
     
     <input 
       required 
       placeholder="Nama Pemilik Rekening" 
-      className="w-full bg-black-900 border-2 border-black-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 uppercase" 
+      className="w-full bg-white border-2 border-gray-300 text-gray-900 p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 uppercase focus:border-orange-500 focus:ring-1 focus:ring-orange-500" 
       onChange={e => setForm({...form, account_name: e.target.value })} 
     />
   </div>
