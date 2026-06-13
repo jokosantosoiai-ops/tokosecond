@@ -288,7 +288,7 @@ export default function Jual() {
   <div className="absolute top-0 right-0 p-4 opacity-10 text-4xl">🏦</div>
   <h3 className="text-[10px] font-bold text-[#EE4D2D] uppercase tracking-[0.2em]">KEAMANAN REKENING (ESCROW)</h3>
   <p className="text-[12px] text-gray-600 font-medium leading-relaxed mb-4 italic">
-    Dana pembeli akan ditahan oleh sistem dan baru dikirim ke rekening Anda setelah barang dikonfirmasi sampai.
+    Dikenakan fee aplikasi sebesar 5% untuk mendukung layanan keamanan transaksi dan Dana pembeli akan ditahan oleh sistem dan baru dikirim ke rekening Anda setelah barang dikonfirmasi sampai sete.
   </p>
 
   <div className="space-y-4">
