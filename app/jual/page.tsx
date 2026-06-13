@@ -293,7 +293,7 @@ export default function Jual() {
   <input 
     required 
     placeholder="Nama Bank (BCA, Mandiri, BRI, dll)" 
-    className="w-full bg-gray-900 border-2 border-gray-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400" 
+    className="w-full bg-black-900 border-2 border-black-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400" 
     onChange={e => setForm({...form, bank_name: e.target.value })} 
   />
   
@@ -301,14 +301,14 @@ export default function Jual() {
     <input 
       required 
       placeholder="Nomor Rekening" 
-      className="w-full bg-gray-900 border-2 border-gray-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400" 
+      className="w-full bg-black-900 border-2 border-black-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400" 
       onChange={e => setForm({...form, account_number: e.target.value })} 
     />
     
     <input 
       required 
       placeholder="Nama Pemilik Rekening" 
-      className="w-full bg-gray-900 border-2 border-gray-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 uppercase" 
+      className="w-full bg-black-900 border-2 border-black-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 uppercase" 
       onChange={e => setForm({...form, account_name: e.target.value })} 
     />
   </div>
