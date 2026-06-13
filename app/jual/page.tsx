@@ -290,13 +290,29 @@ export default function Jual() {
               <p className="text-[9px] text-black-400 font-medium leading-relaxed mb-4 italic">Dana pembeli akan ditahan oleh sistem dan baru dikirim ke rekening Anda setelah barang dikonfirmasi sampai.</p>
               
               <div className="space-y-4">
-                <input required placeholder="Nama Bank (BCA, Mandiri, BRI, dll)" className="w-full bg-black-800 border-none text-white p-4 rounded-xl outline-none text-xs font-bold placeholder:text-black-600" onChange={e => setForm({...form, bank_name: e.target.value })} />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input required placeholder="Nomor Rekening" className="w-full bg-black-800 border-none text-white p-4 rounded-xl outline-none text-xs font-bold placeholder:text-black-600" onChange={e => setForm({...form, account_number: e.target.value })} />
-                  <input required placeholder="Nama Pemilik Rekening" className="w-full bg-black-800 border-none text-white p-4 rounded-xl outline-none text-xs font-bold placeholder:text-black-600 uppercase" onChange={e => setForm({...form, account_name: e.target.value })} />
-                </div>
-              </div>
-            </div>
+  <input 
+    required 
+    placeholder="Nama Bank (BCA, Mandiri, BRI, dll)" 
+    className="w-full bg-gray-900 border-2 border-gray-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400" 
+    onChange={e => setForm({...form, bank_name: e.target.value })} 
+  />
+  
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <input 
+      required 
+      placeholder="Nomor Rekening" 
+      className="w-full bg-gray-900 border-2 border-gray-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400" 
+      onChange={e => setForm({...form, account_number: e.target.value })} 
+    />
+    
+    <input 
+      required 
+      placeholder="Nama Pemilik Rekening" 
+      className="w-full bg-gray-900 border-2 border-gray-400 text-white p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 uppercase" 
+      onChange={e => setForm({...form, account_name: e.target.value })} 
+    />
+  </div>
+</div>//</div>
 
             <button 
               disabled={loading}
