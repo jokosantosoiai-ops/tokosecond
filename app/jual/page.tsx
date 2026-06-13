@@ -283,36 +283,39 @@ export default function Jual() {
               </div>
             </div>
 
-            {/* DATA PEMBAYARAN ESCROW */}
-            <div className="bg-black-900 p-8 rounded-[2.5rem] space-y-5 shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-10 text-4xl">🏦</div>
-              <h3 className="text-[10px] font-black text-[#EE4D2D] uppercase tracking-[0.3em] mb-2 italic">Keamanan Rekening (Escrow)</h3>
-              <p className="text-[9px] text-black-400 font-medium leading-relaxed mb-4 italic">Dana pembeli akan ditahan oleh sistem dan baru dikirim ke rekening Anda setelah barang dikonfirmasi sampai.</p>
-              
-              <div className="space-y-4">
-  <input 
-    required 
-    placeholder="Nama Bank (BCA, Mandiri, BRI, dll)" 
-    className="w-full bg-white border-2 border-gray-300 text-gray-900 p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 focus:border-orange-500 focus:ring-1 focus:ring-orange-500" 
-    onChange={e => setForm({...form, bank_name: e.target.value })} 
-  />
-  
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <input 
-      required 
-      placeholder="Nomor Rekening" 
-      className="w-full bg-white border-2 border-gray-300 text-gray-900 p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 focus:border-orange-500 focus:ring-1 focus:ring-orange-500" 
-      onChange={e => setForm({...form, account_number: e.target.value })} 
+{/* DATA PEMBAYARAN ESCROW */}
+<div className="bg-white p-8 rounded-[2.5rem] space-y-5 shadow-2xl relative">
+  <div className="absolute top-0 right-0 p-4 opacity-10 text-4xl">🏦</div>
+  <h3 className="text-[10px] font-bold text-[#EE4D2D] uppercase tracking-[0.2em]">KEAMANAN REKENING (ESCROW)</h3>
+  <p className="text-[12px] text-gray-600 font-medium leading-relaxed mb-4 italic">
+    Dana pembeli akan ditahan oleh sistem dan baru dikirim ke rekening Anda setelah barang dikonfirmasi sampai.
+  </p>
+
+  <div className="space-y-4">
+    <input
+      required
+      placeholder="Nama Bank (BCA, Mandiri, BRI, dll)"
+      className="w-full bg-white border-2 border-gray-300 text-gray-900 p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+      onChange={e => setForm({...form, bank_name: e.target.value })}
     />
-    
-    <input 
-      required 
-      placeholder="Nama Pemilik Rekening" 
-      className="w-full bg-white border-2 border-gray-300 text-gray-900 p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 uppercase focus:border-orange-500 focus:ring-1 focus:ring-orange-500" 
-      onChange={e => setForm({...form, account_name: e.target.value })} 
-    />
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input
+        required
+        placeholder="Nomor Rekening"
+        className="w-full bg-white border-2 border-gray-300 text-gray-900 p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+        onChange={e => setForm({...form, account_number: e.target.value })}
+      />
+
+      <input
+        required
+        placeholder="Nama Pemilik Rekening"
+        className="w-full bg-white border-2 border-gray-300 text-gray-900 p-4 rounded-xl outline-none text-sm font-bold placeholder:text-gray-400 uppercase focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+        onChange={e => setForm({...form, account_name: e.target.value })}
+      />
+    </div>
   </div>
-</div>//</div>
+</div>
 
             <button 
               disabled={loading}
